@@ -1,9 +1,8 @@
-import { Typography } from '@mui/material'
-import { Pool } from 'market-sdk'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import Link from "next/link"
+import Head from "next/head"
 import { useEffect, useState } from 'react'
+import { Paper, Typography, Link as MaterialLink } from '@mui/material'
+import { Pool } from 'market-sdk'
 
 import WalletConnectButton from '../components/WalletSelector/Button'
 
@@ -50,13 +49,17 @@ function Home(){
 
         <pre>
           {
-            pools && JSON.stringify(pools.map(pool => ({
-              comptroller: pool.comptroller.address,
-              name: pool.name,
-              creator: pool.creator,
-              blockPosted: pool.blockPosted.toString(),
-              timestampPosted: pool.timestampPosted.toString(),
-            })), undefined, 4)
+            pools && pools.map((pool, i) => (
+              <Link key={i} href={`/pools/${i}`} passHref>
+                <MaterialLink underline="hover">
+                  <Paper sx={{ padding: 2, margin: 2 }}>
+                    <Typography variant="h6">{pool.name}</Typography>
+                    <Typography variant="body1">Creator: {pool.creator}</Typography>
+                    <Typography variant="body1">Comptroller: {pool.comptroller.address}</Typography>
+                  </Paper>
+                </MaterialLink>
+              </Link>
+            ))
           }
         </pre>
       </main>
